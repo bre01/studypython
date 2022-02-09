@@ -1,6 +1,8 @@
 import pygame 
-class Ship():
+from pygame.sprite import Sprite 
+class Ship(Sprite):
 	def __init__(self,ai_settings,screen):
+		super().__init__()
 		self.ai_settings=ai_settings #ai_settings属性是一个Settings实例 
 		#load the image and get the around rectangle 
 		self.screen = screen #screen属性是一个 
