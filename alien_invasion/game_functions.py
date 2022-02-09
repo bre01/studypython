@@ -88,8 +88,7 @@ def check_bullet_alien_collisions(ai_settings,screen,stats,scoreboard,ship,alien
 			stats.score +=ai_settings.alien_points * len(aliens)
 			scoreboard.prep_score()
 		check_high_score(stats,scoreboard)
-		print(stats.high_score)
-		print(stats.score)
+		
 	if len(aliens)==0:
 		bullets.empty()
 		ai_settings.increase_speed()
