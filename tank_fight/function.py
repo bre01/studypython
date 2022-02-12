@@ -2,6 +2,7 @@ import pygame
 import sys 
 from bullet import Bullet 
 from tank import Tank 
+from block import Block 
 def check_events(settings,screen,tank1,tank2,bullets1,bullets2,bullets3,bullets4):
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -28,7 +29,7 @@ def check_keyup_events(event,tank1,tank2):
     if event.key==pygame.K_DOWN:
         tank2.moving_down=False 
 
-def update_screen(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
+def update_screen(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4,blocks):
     screen.fill(settings.bg_color)
     for bullet in bullets1:
         bullet.draw_bullet()
@@ -40,6 +41,7 @@ def update_screen(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
         bullet.draw_bullet()    
     
     tanks.draw(screen)
+    blocks.draw(screen)
     
     pygame.display.flip()
 
@@ -76,7 +78,7 @@ def check_keydown_events(settings,screen,event,tank1,tank2,bullets1,bullets2,bul
         fire_bullets(settings,screen,tank1,bullets1,bullets2,bullets3,bullets4)
     if event.key==pygame.K_l:
         fire_bullets(settings,screen,tank2,bullets1,bullets2,bullets3,bullets4)
-def update_bullets(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
+def update_bullets(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4,blocks):
     
     for bullet in bullets1.sprites():
         bullet.update1()
@@ -94,7 +96,7 @@ def update_bullets(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
         bullet.update4()
         if bullet.rect.centerx <0:
             bullets4.remove(bullet)
-    check_bullet_tank_collisions(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4)
+    check_bullet_tank_collisions(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4,blocks)
 
 
 def fire_bullets(settings,screen,tank,bullets1,bullets2,bullets3,bullets4):
@@ -110,10 +112,18 @@ def fire_bullets(settings,screen,tank,bullets1,bullets2,bullets3,bullets4):
     if tank.direction==4:
         new_bullet4=Bullet(settings,screen,tank)
         bullets4.add(new_bullet4)
-def check_bullet_tank_collisions(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
-    collisions=pygame.sprite.groupcollide(bullets1,tanks,False,True)
-    collisions=pygame.sprite.groupcollide(bullets2,tanks,False,True)
-    collisions=pygame.sprite.groupcollide(bullets3,tanks,False,True)
-    collisions=pygame.sprite.groupcollide(bullets4,tanks,False,True)
-    
+def check_bullet_tank_collisions(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4,blocks):
+    collisions=pygame.sprite.groupcollide(bullets1,tanks,True,True)
+    collisions=pygame.sprite.groupcollide(bullets2,tanks,True,True)
+    collisions=pygame.sprite.groupcollide(bullets3,tanks,True,True)
+    collisions=pygame.sprite.groupcollide(bullets4,tanks,True,True)
+    collisions=pygame.sprite.groupcollide(bullets1,blocks,True,False)
+    collisions=pygame.sprite.groupcollide(bullets2,blocks,True,False)
+    collisions=pygame.sprite.groupcollide(bullets3,blocks,True,False)
+    collisions=pygame.sprite.groupcollide(bullets4,blocks,True,False)
+def add_blocks(settings,screen,blocks):
+    for number in range(1,11):
+        for number2 in range(1,6):
+            new_block=Block(settings,screen,number*100)
+            blocks.add(new_block)
 
