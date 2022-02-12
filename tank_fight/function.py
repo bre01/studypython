@@ -1,49 +1,119 @@
 import pygame 
 import sys 
-
-def check_events(screen,tank):
+from bullet import Bullet 
+from tank import Tank 
+def check_events(settings,screen,tank1,tank2,bullets1,bullets2,bullets3,bullets4):
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             sys.exit()
         if event.type==pygame.KEYDOWN:
-            check_keydown_events(event,tank)
+            check_keydown_events(settings,screen,event,tank1,tank2,bullets1,bullets2,bullets3,bullets4)
         if event.type==pygame.KEYUP:
-            tank.moving_left=False
-            tank.moving_right=False
-            tank.moving_up=False 
-            tank.moving_down=False 
-            
+            check_keyup_events(event,tank1,tank2)
+def check_keyup_events(event,tank1,tank2):
+    if event.key==pygame.K_a:
+        tank1.moving_left=False
+    if event.key== pygame.K_d:
+        tank1.moving_right=False 
+    if event.key== pygame.K_w:
+        tank1.moving_up=False 
+    if event.key==pygame.K_s:
+        tank1.moving_down=False  
+    if event.key==pygame.K_LEFT:
+        tank2.moving_left=False
+    if event.key==pygame.K_RIGHT:
+        tank2.moving_right=False 
+    if event.key==pygame.K_UP:
+        tank2.moving_up=False 
+    if event.key==pygame.K_DOWN:
+        tank2.moving_down=False 
 
-
-def update_screen(settings,screen,tank):
+def update_screen(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
     screen.fill(settings.bg_color)
+    for bullet in bullets1:
+        bullet.draw_bullet()
+    for bullet in bullets2:
+        bullet.draw_bullet()
+    for bullet in bullets3:
+        bullet.draw_bullet()
+    for bullet in bullets4:
+        bullet.draw_bullet()    
     
-    tank.image=pygame.transform.flip(tank.image,False,False)
-    tank.blitme()
+    tanks.draw(screen)
+    
     pygame.display.flip()
 
-def check_keydown_events(event,tank):
+def check_keydown_events(settings,screen,event,tank1,tank2,bullets1,bullets2,bullets3,bullets4):
     if event.key==pygame.K_a:
-        tank.direction=4
-        tank.moving_left=True 
-        tank.moving_right=False
-        tank.moving_up=False 
-        tank.moving_down=False 
-    elif event.key==pygame.K_d:
-        tank.direction=2
-        tank.moving_left=False  
-        tank.moving_right=True 
-        tank.moving_up=False 
-        tank.moving_down=False 
-    elif event.key== pygame.K_w:
-        tank.direction=1
-        tank.moving_left=False 
-        tank.moving_right=False
-        tank.moving_up=True  
-        tank.moving_down=False 
-    elif event.key==pygame.K_s:
-        tank.direction=3
-        tank.moving_left=False 
-        tank.moving_right=False
-        tank.moving_up=False 
-        tank.moving_down=True 
+        tank1.direction=4
+        tank1.moving_left=True
+    
+        
+    if event.key==pygame.K_d:
+        tank1.direction=2 
+        tank1.moving_right=True 
+        
+    if event.key== pygame.K_w:
+        tank1.direction=1
+        tank1.moving_up=True  
+        
+    if event.key==pygame.K_s:
+        tank1.direction=3    
+        tank1.moving_down=True 
+    if event.key==pygame.K_LEFT:
+        tank2.moving_left=True
+        tank2.direction=4
+    if event.key==pygame.K_RIGHT:
+        tank2.moving_right=True 
+        tank2.direction=2 
+    if event.key==pygame.K_UP:
+        tank2.moving_up=True 
+        tank2.direction=1
+    if event.key==pygame.K_DOWN:
+        tank2.moving_down=True 
+        tank2.direction=3  
+    if event.key==pygame.K_SPACE:
+        fire_bullets(settings,screen,tank1,bullets1,bullets2,bullets3,bullets4)
+    if event.key==pygame.K_l:
+        fire_bullets(settings,screen,tank2,bullets1,bullets2,bullets3,bullets4)
+def update_bullets(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
+    
+    for bullet in bullets1.sprites():
+        bullet.update1()
+        if bullet.rect.centery < 0:
+            bullets1.remove(bullet)
+    for bullet in bullets2:
+        bullet.update2()
+        if bullet.rect.centerx >settings.screen_width:
+            bullets2.remove(bullet)
+    for bullet in bullets3:   
+        bullet.update3()
+        if bullet.rect.centery >settings.screen_height:
+            bullets3.remove(bullet)
+    for bullet in bullets4:
+        bullet.update4()
+        if bullet.rect.centerx <0:
+            bullets4.remove(bullet)
+    check_bullet_tank_collisions(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4)
+
+
+def fire_bullets(settings,screen,tank,bullets1,bullets2,bullets3,bullets4):
+    if tank.direction  ==1:
+        new_bullet1=Bullet(settings,screen,tank)
+        bullets1.add(new_bullet1)
+    if tank.direction==2:
+        new_bullet2=Bullet(settings,screen,tank)
+        bullets2.add(new_bullet2)
+    if tank.direction==3:
+        new_bullet3=Bullet(settings,screen,tank)
+        bullets3.add(new_bullet3)
+    if tank.direction==4:
+        new_bullet4=Bullet(settings,screen,tank)
+        bullets4.add(new_bullet4)
+def check_bullet_tank_collisions(settings,screen,tanks,bullets1,bullets2,bullets3,bullets4):
+    collisions=pygame.sprite.groupcollide(bullets1,tanks,False,True)
+    collisions=pygame.sprite.groupcollide(bullets2,tanks,False,True)
+    collisions=pygame.sprite.groupcollide(bullets3,tanks,False,True)
+    collisions=pygame.sprite.groupcollide(bullets4,tanks,False,True)
+    
+

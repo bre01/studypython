@@ -1,2 +1,2 @@
 
-        update_screen(settings,screen)
+    bullets1=Group()
