@@ -1,4 +1,4 @@
-#
+ #
 # @lc app=leetcode.cn id=21 lang=python3
 #
 # [21] 合并两个有序链表
@@ -12,13 +12,20 @@
 #         self.next = next
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        if list1[0]<list2[0]:
-            list.append[0]
+        list=[]
+        while list1 and list2:
+            if list1[0]>list2[0]:
+                list.append(list2[0])
+                list2.remove(list2[0])
+            else:
+                list.append(list1[0])
+                list1.remove(list1[0])
+        for i in list1:
+            list.apepnd(i)
         for i in list2:
-            for j in list1:
-                if j <=i:
-                    list.append(j)
-                else:
-                    break
-# @lc code=end
+            list.append(i)
+        return
+        
+
+        # @lc code=end
 

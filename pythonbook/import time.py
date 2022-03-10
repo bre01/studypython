@@ -1,0 +1,7 @@
+import time 
+ti=clock()
+print('go')
+time.sleep(5)
+print('python')
+ti=clock() 
+print(ti) 

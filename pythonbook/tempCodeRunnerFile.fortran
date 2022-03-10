@@ -1,0 +1,2 @@
+name=input()
+print(“{}大侠学号python，大展拳脚!”.format(name[0]))
