@@ -13,7 +13,7 @@ def run_game():
 	ai_settings=Settings()  #一个Settings实例
 	screen=pygame.display.set_mode((ai_settings.screen_width, #生成一个屏幕surface
 		ai_settings.screen_height))	 #一个元组 屏幕长宽    
-	pygame.display.set_caption('Alien Invasion')  #设置游戏名字 
+	pygame.display.set_caption(' Alien Invasion')  #设置游戏名字 
 	play_button=Button(ai_settings,screen,'play')
 	stats=GameStats(ai_settings)
 	ship=Ship(ai_settings,screen) #传给Ship类 一个屏幕 生成ship实例
