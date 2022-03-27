@@ -30,5 +30,3 @@ for word in ['is','he','her','they','and','or','so']:
 print(ls[:10])
 
 print('you')    
-for i in range(434):
-    print(i)
